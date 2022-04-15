@@ -1,5 +1,5 @@
 # eval_odom_app
-用于评估Odometry的可是换软件
+用于评估Odometry的可视化软件
 
 
 # mian
