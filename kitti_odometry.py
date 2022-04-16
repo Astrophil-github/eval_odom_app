@@ -1,10 +1,9 @@
 ''''''
 '''
-@Author: Huangying Zhan (huangying.zhan.work@gmail.com)
-@Date: 2019-09-01
-@Copyright: Copyright (C) Huangying Zhan 2020. All rights reserved. Please refer to the license file.
-@LastEditTime: 2020-07-07
-@LastEditors: Huangying Zhan
+@Author: Astrophil (luo19902567292@163.com)
+@Date: 2022-04-16
+@LastEditTime: 2022-04-16
+@LastEditors: Astrophil
 @Description: This file contains evaluation tool for KITTI odometry
 '''
 

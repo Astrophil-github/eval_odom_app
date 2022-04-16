@@ -6,52 +6,187 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>739</width>
-    <height>603</height>
+    <width>746</width>
+    <height>713</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QTextEdit" name="textEdit">
+   <widget class="QWidget" name="">
     <property name="geometry">
      <rect>
-      <x>290</x>
-      <y>140</y>
-      <width>301</width>
-      <height>31</height>
+      <x>30</x>
+      <y>10</y>
+      <width>681</width>
+      <height>671</height>
      </rect>
     </property>
-    <property name="placeholderText">
-     <string>请输入需要测试序列</string>
-    </property>
-   </widget>
-   <widget class="QPushButton" name="pushButton">
-    <property name="geometry">
-     <rect>
-      <x>280</x>
-      <y>360</y>
-      <width>93</width>
-      <height>28</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>生成</string>
-    </property>
-   </widget>
-   <widget class="QRadioButton" name="radioButton">
-    <property name="geometry">
-     <rect>
-      <x>90</x>
-      <y>140</y>
-      <width>115</width>
-      <height>19</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>RadioButton</string>
-    </property>
+    <layout class="QVBoxLayout" name="verticalLayout_3">
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_2">
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_2">
+         <item>
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>请选择需要被测试的序列  </string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QComboBox" name="comboBox">
+           <item>
+            <property name="text">
+             <string>00</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>01</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>02</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>03</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>04</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>05</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>06</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>07</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>08</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>09</string>
+            </property>
+           </item>
+           <item>
+            <property name="text">
+             <string>10</string>
+            </property>
+           </item>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QRadioButton" name="radioButton">
+           <property name="text">
+            <string>已放置在test文件夹                     </string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLineEdit" name="lineEdit">
+           <property name="placeholderText">
+            <string>请输入 需要测试序列的路径</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QPushButton" name="button">
+         <property name="text">
+          <string>生成</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="tableWidget">
+         <row>
+          <property name="text">
+           <string>Seq</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Translational error (%): </string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Rotational error (deg/100m):</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>ATE (m): </string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>RPE (m): </string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>RPE (deg): </string>
+          </property>
+         </row>
+         <column>
+          <property name="text">
+           <string>                     Value              </string>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGraphicsView" name="graphicsView_2">
+         <property name="minimumSize">
+          <size>
+           <width>677</width>
+           <height>281</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>677</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="sceneRect">
+          <rectf>
+           <x>0.000000000000000</x>
+           <y>0.000000000000000</y>
+           <width>0.000000000000000</width>
+           <height>0.000000000000000</height>
+          </rectf>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
