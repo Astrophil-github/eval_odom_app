@@ -42,3 +42,6 @@
 
 ####  2. kitti_odometry.py
     评估程序
+
+# 使用
+    主需需要把实验得到的txt文件放置到test文件夹在运行app.py即可
