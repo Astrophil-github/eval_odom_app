@@ -18,6 +18,9 @@ from glob import glob
 
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 import cv2
+import pandas as pd
+import xlrd
+import heapq
 
 
 def scale_lse_solver(X, Y):
@@ -577,10 +580,93 @@ class KittiEvalOdom():
         for line in lines:
             f.writelines(line)
 
-    def Excel_comparison(self):
-        pass
+    def Rank(self, result_data):
+        rt = []
+        for index in range(len(result_data)):
+            ours = result_data[index][-1]
+            rank = 1
+            for i in result_data[index][:-1]:
+                if i < ours:
+                    rank += 1
+            rt.append(rank)
+        return rt
 
-    def eval(self, gt_dir, result_dir, 
+    def Excel_comparison(self):
+        """生成Excel实验对比列表
+
+        """
+        dict_ = {}
+        raw_data = pd.read_excel(
+            self.excel_raw_data_path,
+            # skiprows=[1, ],
+            # names=None
+        )
+
+        # 获取实验数据
+        column = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', 'Avg. Err.']
+        data = raw_data.loc[:, column].values
+        len_data = len(data)
+
+        # 获取方法名称
+        methods = raw_data.loc[:, 'Method']
+        methods = methods.dropna(how= 'all')
+        methods = methods.values.tolist()
+        # 添加ours
+        methods.append('Tested data')
+        self.methods = methods
+
+        # 将原始数据分为几个list
+        TErr = []  # Translational error (%)
+        RErr = []  # Rotational error (deg/100m)
+        ATE = []  # ATE (m)
+        RPE_m = []  # RPE (m)
+        RPE_deg = []  # RPE (deg)
+        seq_index = column.index(self.eval_seq)
+        for i in range(int(len_data / 5)):
+            TErr.append(data[i * 5][seq_index])
+            RErr.append(data[i * 5 + 1][seq_index])
+            ATE.append(data[i * 5 + 2][seq_index])
+            RPE_m.append(data[i * 5 + 3][seq_index])
+            RPE_deg.append(data[i * 5 + 4][seq_index])
+
+        # 添加被测数据进入list
+        TErr.append(self.result[1])
+        RErr.append(self.result[2])
+        ATE.append(self.result[3])
+        RPE_m.append(self.result[4])
+        RPE_deg.append(self.result[5])
+
+        # 现有实验数据长度
+        len_data += 1
+
+        # 制表
+        result_data = [TErr, RErr, ATE, RPE_m, RPE_deg]
+        # 返回各指标排位信息。并转为numpy
+        rank = np.array(self.Rank(result_data))
+        self.rank = rank
+        rank = rank[:, np.newaxis]  # rank升一个维度，5x1
+
+        result_data = np.array(result_data) # [5， 方法数量（包括自己的）]
+        result_data = np.c_[result_data, rank]  # 沿着矩阵列拼接矩阵
+        self.result_data = result_data
+
+        result_data = pd.DataFrame(result_data)
+
+        # 列表标题
+        result_data_columns = []
+        print(methods)
+        for method in methods:
+            result_data_columns.append(method)
+        result_data_columns.append('Ours Rank')
+        result_data.columns = result_data_columns
+        # 列表指标
+        result_data.index = ['terr', 'rerr', 'ATE', 'RPE(m)', 'RPE(°)']
+
+        writer = pd.ExcelWriter(self.excel_save_path)
+        result_data.to_excel(writer, float_format='%.3f')
+        writer.save()
+
+    def eval(self, gt_dir, result_dir,
                 alignment=None,
                 seq=None,
                 if_save=False):
@@ -620,8 +706,12 @@ class KittiEvalOdom():
         error_dir = result_dir + seq + "/errors"
         self.plot_path_dir = result_dir + seq + "/plot_path"
         self.plot_error_dir = result_dir + seq + "/plot_error"
-        result_txt = os.path.join(result_dir, seq, "/result.txt")
+        # result_txt = os.path.join(result_dir, seq, "/result.txt")
         result_txt = "{}{}/result.txt".format(result_dir, seq)
+
+        # excel
+        self.excel_raw_data_path = "dataset/kitti_odom/other_experiments.xlsx"
+        self.excel_save_path = "{}{}/result.xlsx".format(result_dir, seq)
 
 
         self.if_save = if_save
@@ -638,16 +728,16 @@ class KittiEvalOdom():
         # Create evaluation list
         if seq is None:
             available_seqs = sorted(glob(os.path.join(result_dir, "*.txt")))
-            self.eval_seqs = []
+            self.eval_seq = []
             for seq in available_seqs:
                 if not("result" in seq.split("/")[-1]):
-                    self.eval_seqs.append(seq.split("/")[-1].split(".")[0])
+                    self.eval_seq.append(seq.split("/")[-1].split(".")[0])
         else:
-            self.eval_seqs = seq
+            self.eval_seq = seq
 
 
         # evaluation
-        i = self.eval_seqs
+        i = self.eval_seq
         # Read pose txt
         file_name = '{}.txt'.format(i)
 
@@ -748,4 +838,14 @@ class KittiEvalOdom():
         # excel对比
         self.Excel_comparison()
 
-        return self.result
+        # 图片显示
+        print(np.shape(self.img_sequence_path))
+        print(np.shape(self.img_trans_err))
+        print(np.shape(self.img_rot_err))
+
+        err_img = np.vstack((self.img_trans_err, self.img_rot_err))  # 竖直堆叠
+        imgs = np.hstack((self.img_sequence_path, err_img))  # 水平堆叠
+        # imgs = np.hstack([self.img_sequence_path, self.img_trans_err])
+        cv2.imshow('imgs', imgs)
+
+        return self.result, self.rank, self.methods, self.result_data
