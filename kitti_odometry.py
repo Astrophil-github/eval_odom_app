@@ -24,8 +24,8 @@ import heapq
 
 
 def scale_lse_solver(X, Y):
-    """Least-sqaure-error solver
-    Compute optimal scaling factor so that s(X)-Y is minimum
+    """最小平方误差解算器
+    计算最佳比例因子，使s(X)-Y最小
 
     Args:
         X (array, [KxN]): current data
@@ -39,11 +39,7 @@ def scale_lse_solver(X, Y):
 
 
 def umeyama_alignment(x, y, with_scale=False):
-    """
-    Computes the least squares solution parameters of an Sim(m) matrix
-    that minimizes the distance between a set of registered points.
-    Umeyama, Shinji: Least-squares estimation of transformation parameters
-                     between two point patterns. IEEE PAMI, 1991
+    """计算Sim(m)矩阵的最小二乘解参数，该矩阵最小化一组注册点之间的距离。
     :param x: mxn matrix of points, m = dimension, n = nr. of data points
     :param y: mxn matrix of points, m = dimension, n = nr. of data points
     :param with_scale: set to True to align also the scale (default: 1.0 scale)
@@ -89,7 +85,7 @@ def umeyama_alignment(x, y, with_scale=False):
 
 
 class KittiEvalOdom():
-    """Evaluate odometry result
+    """评估里程计
     """
     def __init__(self):
         self.lengths = [100, 200, 300, 400, 500, 600, 700, 800]
@@ -97,10 +93,10 @@ class KittiEvalOdom():
         self.result = []
 
     def load_poses_from_txt(self, file_name):
-        """Load poses from txt (KITTI format)
-        Each line in the file should follow one of the following structures
-            (1) idx pose(3x4 matrix in terms of 12 numbers)
-            (2) pose(3x4 matrix in terms of 12 numbers)
+        """从txt加载姿势（KITTI格式）
+        文件中的每一行都应该遵循以下结构之一
+            (1) idx姿态（12个数字的3x4矩阵）
+            (2) 姿态（12个数字的3x4矩阵）
 
         Args:
             file_name (str): txt file path
@@ -127,7 +123,7 @@ class KittiEvalOdom():
         return poses
 
     def trajectory_distances(self, poses):
-        """Compute distance for each pose w.r.t frame-0
+        """计算每个姿势的距离w.r.t frame-0
 
         Args:
             poses (dict): {idx: 4x4 array}
@@ -149,7 +145,7 @@ class KittiEvalOdom():
         return dist
 
     def rotation_error(self, pose_error):
-        """Compute rotation error
+        """计算旋转误差
         
         Args:
             pose_error (array, [4x4]): relative pose error
@@ -165,7 +161,7 @@ class KittiEvalOdom():
         return rot_error
 
     def translation_error(self, pose_error):
-        """Compute translation error
+        """计算平移错误
         
         Args:
             pose_error (array, [4x4]): relative pose error
@@ -180,8 +176,7 @@ class KittiEvalOdom():
         return trans_error
 
     def last_frame_from_segment_length(self, dist, first_frame, length):
-        """Find frame (index) that away from the first_frame with
-        the required distance
+        """找到距离第一个_帧有所需距离的帧（索引）
         
         Args:
             dist (list): distance of each pose w.r.t frame-0
@@ -197,7 +192,7 @@ class KittiEvalOdom():
         return -1
 
     def calc_sequence_errors(self, poses_gt, poses_result):
-        """calculate sequence error
+        """计算序列误差
         
         Args:
             poses_gt (dict): {idx: 4x4 array}, ground truth poses
@@ -253,7 +248,7 @@ class KittiEvalOdom():
         return err
         
     def save_sequence_errors(self, err, file_name):
-        """Save sequence error
+        """保存序列错误
         
         Args:
             err (list): a list of list containing error information
@@ -266,7 +261,7 @@ class KittiEvalOdom():
         fp.close()
 
     def save_RPE_errors(self, err, file_name):
-        """Save sequence error
+        """保存序列错误
         
         Args:
             err (dict): error information
@@ -281,7 +276,7 @@ class KittiEvalOdom():
         fp.close()
 
     def compute_overall_err(self, seq_err):
-        """Compute average translation & rotation errors
+        """计算平均平移和旋转误差
         
         Args:
             seq_err (list), a list of list containing [r_err, t_err]
@@ -310,7 +305,7 @@ class KittiEvalOdom():
             return 0, 0
 
     def plot_trajectory(self, poses_gt, poses_result, seq):
-        """Plot trajectory for both GT and prediction绘制GT和预测的轨迹
+        """绘制GT和预测的轨迹
         
         Args:
             poses_gt (dict): {idx: 4x4 array}; ground truth poses
@@ -368,7 +363,7 @@ class KittiEvalOdom():
         plt.close(fig)
 
     def plot_error(self, avg_segment_errs, seq):
-        """Plot per-length error
+        """按长度绘制错误
         
         Args:
             avg_segment_errs (dict): {100:[avg_t_err, avg_r_err],...}
@@ -427,7 +422,7 @@ class KittiEvalOdom():
         plt.close(fig)
 
     def compute_segment_error(self, seq_errs):
-        """This function calculates average errors for different segment.
+        """此函数计算不同段的平均误差。
         
         Args:
             seq_errs (list): a list of list containing [first_frame, rotation error, translation error, length, speed]
@@ -465,7 +460,7 @@ class KittiEvalOdom():
         return avg_segment_errs
 
     def compute_ATE(self, gt, pred):
-        """Compute RMSE of ATE
+        """计算ATE的RMSE
         
         Args:
             gt (dict): ground-truth poses as [4x4] array
@@ -492,7 +487,7 @@ class KittiEvalOdom():
         return ate
     
     def compute_RPE(self, gt, pred):
-        """Compute RPE
+        """计算 RPE
         
         Args:
             gt (dict): ground-truth poses as [4x4] array
@@ -519,7 +514,7 @@ class KittiEvalOdom():
         return rpe_errors
 
     def scale_optimization(self, gt, pred):
-        """ Optimize scaling factor
+        """ 优化比例因子
         
         Args:
             gt (dict): ground-truth poses as [4x4] array
@@ -544,7 +539,7 @@ class KittiEvalOdom():
         return pred_updated
     
     def compute_trajectory_length(self, gt):
-        """Compute trajectory length
+        """计算轨迹长度
         
         Args:
             gt (dict): ground-truth poses as [4x4] array
@@ -562,7 +557,7 @@ class KittiEvalOdom():
         return length
     
     def write_result(self, f, seq, errs):
-        """Write result into a txt file
+        """将结果写入txt文件
         
         Args:
             f (IOWrapper)
@@ -581,6 +576,11 @@ class KittiEvalOdom():
             f.writelines(line)
 
     def Rank(self, result_data):
+        """生成排名
+
+        :param result_data:
+        :return:
+        """
         rt = []
         for index in range(len(result_data)):
             ours = result_data[index][-1]
@@ -670,7 +670,7 @@ class KittiEvalOdom():
                 alignment=None,
                 seq=None,
                 if_save=False):
-        """Evaulate required/available sequences
+        """评估所需/可用序列
         
         Args:
             gt_dir (str): ground truth poses txt files directory
