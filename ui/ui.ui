@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>918</width>
-    <height>825</height>
+    <width>922</width>
+    <height>834</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -248,7 +248,7 @@
        <item>
         <widget class="QTableWidget" name="tableWidget">
          <property name="columnCount">
-          <number>1</number>
+          <number>2</number>
          </property>
          <row>
           <property name="text">
@@ -285,6 +285,69 @@
            <string>value</string>
           </property>
          </column>
+         <column>
+          <property name="text">
+           <string>rank</string>
+          </property>
+         </column>
+        </widget>
+       </item>
+       <item>
+        <widget class="Line" name="line">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_5">
+         <property name="text">
+          <string>所参考的方法如下</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="Line" name="line_11">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="tableWidget_otherdata">
+         <property name="columnCount">
+          <number>0</number>
+         </property>
+         <row>
+          <property name="text">
+           <string>method</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Translational error (%): </string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>Rotational error (deg/100m):</string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>ATE (m): </string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>RPE (m): </string>
+          </property>
+         </row>
+         <row>
+          <property name="text">
+           <string>RPE (deg): </string>
+          </property>
+         </row>
         </widget>
        </item>
       </layout>
