@@ -33,7 +33,7 @@ class Stats:
         # 获取”是否保存结果文件“的勾选信息，勾选了返回True
         self.if_save = self.ui.radioButton.isChecked()
 
-        self.result = self.eval_tool.eval(
+        self.result, self.rank, self.methods, self.result_data = self.eval_tool.eval(
             self.gt_path,
             self.file_path,
             alignment=self.align,
@@ -45,9 +45,33 @@ class Stats:
         for i in range(len(self.result)):
             self.ui.tableWidget.setItem(
                 i-1,
-                1,
+                2,
                 QTableWidgetItem("{0:.3f}".format(self.result[i]))
             )
+        for i in range(len(self.rank)):
+            self.ui.tableWidget.setItem(
+                i+1,
+                1,
+                QTableWidgetItem("{}".format(int(self.rank[i])))
+            )
+        # 添加第二个表格的第一行信息
+        len_methods = len(self.methods)
+        self.ui.tableWidget_otherdata.setColumnCount(len_methods)
+        for i in range(len(self.methods)):
+            self.ui.tableWidget_otherdata.setItem(
+                0,
+                i,
+                QTableWidgetItem("{}".format(self.methods[i]))
+            )
+        # 添加第二表格的数据信息
+        for index in range(len(self.result_data)):
+            for data in range(len(self.result_data[index])):
+                self.ui.tableWidget_otherdata.setItem(
+                    index+1,
+                    data,
+                    QTableWidgetItem("{0:.3f}".format(self.result_data[index][data]))
+                )
+
 
 app = QApplication([])
 stats = Stats()
