@@ -1,5 +1,3 @@
-''''''
-import time
 
 '''
 @Author: Astrophil (luo19902567292@163.com)
@@ -21,6 +19,7 @@ import cv2
 import pandas as pd
 import xlrd
 import heapq
+import time
 
 
 def scale_lse_solver(X, Y):

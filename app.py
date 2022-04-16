@@ -1,3 +1,12 @@
+
+'''
+@Author: Astrophil (luo19902567292@163.com)
+@Date: 2022-04-16
+@LastEditTime: 2022-04-16
+@LastEditors: Astrophil
+@Description: Visual interface main program
+'''
+
 from PySide2.QtWidgets import QApplication, QMessageBox, QTableWidgetItem, QGraphicsPixmapItem, QGraphicsScene
 from PySide2.QtUiTools import QUiLoader
 import argparse
